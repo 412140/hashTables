@@ -7,10 +7,19 @@
 using namespace std;
 /*
 ghazi abbas
+<<<<<<< HEAD
+spring sem cpp-ds galbraith
+sources:
+https://www.youtube.com/watch?v=riO8Rgunc0o
+https://www.youtube.com/watch?v=2_3fR-k-LzI
+
+
+=======
 fall semester C++ second part of linked lists/student list project
 galbraith
 
 sources:
+>>>>>>> d37a35782a09b0286c0fe7cb1952ab4f77a17c9c
 
 */
 
@@ -30,7 +39,11 @@ int main()
     cin.ignore();
     if(strcmp(cmd, "quit")==0)
     {
+<<<<<<< HEAD
+      //studentList.quit();
+=======
       studentList.quit();
+>>>>>>> d37a35782a09b0286c0fe7cb1952ab4f77a17c9c
       break; //got it :) 
     } else if(strcmp(cmd, "add")==0) {
       
