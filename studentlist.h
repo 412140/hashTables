@@ -14,7 +14,7 @@ class StudentList
  public:
   StudentList();
   ~StudentList();
- private:
+ //private:
   static const int SIZE = 100;
   //i thought implementing it here would be valid due to troubleshooting concerns 
   struct Node
@@ -34,10 +34,10 @@ class StudentList
   void delStu(int id);
   void calcAvg();
 
-  void insertToList(const char* fileName);
+  void insertToList(Node*& head, Student* student);
   void resizeTable();
   void handleCollisions(int index, Student* newStu);
-  void readFile(const char* fileName, char** names, int* count);  
+  void readFile(const char* fileName, char*** names, int* count);  
   void deleteList(Node*& head);
   int genId();
   float genGpa();

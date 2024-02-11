@@ -1,26 +1,20 @@
 #include "student.h"
 #include "studentlist.h"
-#include "node.h"
+//#include "node.h" implemented as struct in studentlist.cpp
 #include <cstring>
 #include <iostream>
 #include <iomanip>
 using namespace std;
 /*
 ghazi abbas
-<<<<<<< HEAD
 spring sem cpp-ds galbraith
 sources:
 https://www.youtube.com/watch?v=riO8Rgunc0o
 https://www.youtube.com/watch?v=2_3fR-k-LzI
 
-
-=======
-fall semester C++ second part of linked lists/student list project
-galbraith
-
-sources:
->>>>>>> d37a35782a09b0286c0fe7cb1952ab4f77a17c9c
-
++ canvas videos 
++ random websites or c++ stl library pages for pretty much everything 
+using fstream
 */
 
 int main()
@@ -28,7 +22,7 @@ int main()
  StudentList studentList;
 
   char cmd[20];
-  int studentId;
+  //int studentId;
   float gpa;
 
 
@@ -39,23 +33,23 @@ int main()
     cin.ignore();
     if(strcmp(cmd, "quit")==0)
     {
-<<<<<<< HEAD
       //studentList.quit();
-=======
-      studentList.quit();
->>>>>>> d37a35782a09b0286c0fe7cb1952ab4f77a17c9c
       break; //got it :) 
     } else if(strcmp(cmd, "add")==0) {
-      
-      studentList.addStu();
+      char* firstName = studentList.genName("first_names.txt");
+      char* lastName = studentList.genName("last_names.txt");
+      int id = studentList.genId();
+      float gpa = studentList.genGpa();
+      studentList.addStu(firstName, lastName, id, gpa);
       
     } else if(strcmp(cmd, "print")==0) {
       studentList.printStu();
     
     }  else if(strcmp(cmd, "delete")==0) {
-      studentList.delStu();
-
-    
+      int id;
+      cout << "Enter student ID to delete: ";
+      cin >> id;
+      studentList.delStu(id);
     
     } else if(strcmp(cmd,"avg")==0) {
       studentList.calcAvg();

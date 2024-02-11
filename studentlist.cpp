@@ -3,21 +3,20 @@
 
 //god bless copy and paste because i never want to write "StudentList::" again
 
-StudentList::StudentList()
+StudentList::StudentList() : currStu(0)
 {
   srand(time(nullptr));
-  for(int x=0; x<SIZE; ++x)
+  for(int x = 0; x < SIZE; ++x) 
   {
-    hashTable[x]=nullptr;
+    hashTable[x] = nullptr;
   }
-
 }
 
 StudentList::~StudentList()
 {
-  for(x=0;x<SIZE; ++x)
+  for(int x=0;x<SIZE; ++x)
     {
-      deleteList(hashTable[i]);
+      deleteList(hashTable[x]);
     }
 
 }
@@ -60,26 +59,57 @@ int StudentList::hashFxn(const char* key)
   currStu++;
 
 }
-
+/* old implementation
  void StudentList::printStu()
  {
+  bool isEmpty;
    for(int x=0; x<SIZE; ++x)
    {
      Node* curr = hashTable[x];
      while(curr != nullptr)
      {
-       cout << "ID: "<< curr->data->getStudentId()<<
-	 ", Name: "<< curr->data->getStudentFirstName()<<
-	 " "<< curr->data->getStudentLastName()<<
-	 ", GPA:"<<curr->getStudentGPA()<< endl;
-       curr=curr->next;
+      cout << "ID: " << curr->data->getStudentId();
+      cout <<", Name: " << curr->data->getFirstName() << " " << curr->data->getLastName();
+      cout <<", GPA:"<<curr->data->getGPA() << endl;
+      curr = curr->next;
+      isEmpty=false;
      }
    }
- }
+   if(isEmpty)
+   {
+    cout << "list empty" << endl;
 
+   }
+ }
+*/
+
+void StudentList::printStu()
+{
+  for(int x =0; x<SIZE;++x)
+  {
+    Node* curr = hashTable[x];
+    while(curr != nullptr)
+    {
+      char* fN = curr->data->getFirstName();
+      char* lN = curr->data->getLastName();
+      int id = curr->data->getStudentId();
+      float gpa = curr->data->getGPA();
+
+      cout << "ID: " << id << endl;
+      cout << ", Name: " << fN;
+      cout << lN << endl;
+      cout << ", GPA: " <<gpa << endl; 
+      curr=curr->next;
+    }
+
+
+  }
+
+
+}
  void StudentList::delStu(int id)
  {
-     for (int x = 0; x < tableSize; ++x) 
+     for (int x = 0; x < SIZE; ++x) 
      {
         Node* current = hashTable[x];
         Node* prev = nullptr;
@@ -92,7 +122,7 @@ int StudentList::hashFxn(const char* key)
                 }
                 delete current->data;
                 delete current;
-                currentStudents--;
+                currStu--;
                 return;
             }
             prev = current;
@@ -106,14 +136,14 @@ int StudentList::hashFxn(const char* key)
 
  void StudentList::calcAvg()
  {
-  if (currentStudents == 0) 
+  if (currStu == 0) 
   {
     cout << "No students in the list." << endl;
      return;
   }
     float totalGPA = 0.0;
     int count = 0;
-    for (int z = 0; z < tableSize; ++z) 
+    for (int z = 0; z < SIZE; ++z) 
     {
         Node* current = hashTable[z];
         while (current != nullptr) 
@@ -127,7 +157,7 @@ int StudentList::hashFxn(const char* key)
 
  }
 
- void StudentList::insertToList(const char* fileName)
+ void StudentList::insertToList(Node*& head, Student* student)
  {
     Node* newNode = new Node;
     newNode->data = student;
@@ -137,31 +167,38 @@ int StudentList::hashFxn(const char* key)
 
  void StudentList::resizeTable()
  {
-  Node* newHashTable[tableSize * 2] = {nullptr};
-    for (int i = 0; i < tableSize; ++i) 
+   Node* newHashTable[SIZE * 2] = {nullptr};
+    for (int i = 0; i < SIZE; ++i) 
     {
         Node* current = hashTable[i];
-        while (current != nullptr) {
-            int newIndex = hashFunction(current->data->getFirstName());
-            insertIntoList(newHashTable[newIndex], current->data);
-            Node* temp = current;
+        while (current != nullptr) 
+        {
+            int newIndex = hashFxn(current->data->getFirstName());
+            // trying to put currents data into the new ht
+            Node* newNode = new Node;
+            newNode->data = current->data;
+            newNode->next = newHashTable[newIndex];
+            newHashTable[newIndex] = newNode;
+            // Update current to point to the next node
             current = current->next;
-            delete temp;
         }
     }
-    // Update tableSize
-    tableSize *= 2;
-    // Free memory of old hashTable
-    for (int i = 0; i < tableSize / 2; ++i) 
+    // Free memory of old ht
+    for (int i = 0; i < SIZE; ++i) 
+    {
+        deleteList(hashTable[i]);
+    }
+    // Update SIZE var
+    //SIZE *= 2;
+    // Update ht to newHashTable
+    for (int i = 0; i < SIZE / 2; ++i) 
     {
         hashTable[i] = nullptr;
     }
-    // Update hashTable to newHashTable
-    for (int i = 0; i < tableSize; ++i) 
+    for (int i = 0; i < SIZE; ++i) 
     {
         hashTable[i] = newHashTable[i];
     }
-
  }
 
 void StudentList::handleCollisions(int index, Student* newStu)
@@ -172,37 +209,35 @@ void StudentList::handleCollisions(int index, Student* newStu)
       current = current->next;
   }
   current->next = new Node;
-  current->next->data = newStudent;
+  current->next->data = newStu;
   current->next->next = nullptr;
 
  }
- void StudentList::readFile(const char* fileName, char** names, int* count)
+ void StudentList::readFile(const char* fileName, char*** names, int* count)
  {
     ifstream file(fileName);
     if (!file) 
     {
-        cerr << "Error: Unable to open file " << fileName << endl;
+        cerr << "Error: Unable to open file, or my code broke :() " << fileName << endl;
         exit(1);
     }
-    count = 0;
+    *count = 0;
     string line;
+    // Count the number of lines in the file
     while (getline(file, line)) 
     {
-        count++;
+        (*count)++;
     }
     file.clear(); // Clear eof flag
-    file.seekg(0, ios::beg); // Rewind lol
-    // Allocate memory for names
-    *names = new char*[count];
-    // Read names from file
-    for (int i = 0; i < count; ++i) 
+    file.seekg(0, ios::beg); // Rewind !
+    *names = new char*[*count];
+    for (int i = 0; i < *count; ++i) 
     {
         getline(file, line);
         (*names)[i] = new char[line.length() + 1];
         strcpy((*names)[i], line.c_str());
     }
     file.close();
-
 
  }
 

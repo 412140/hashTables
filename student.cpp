@@ -1,6 +1,6 @@
 #include "student.h"
 #include <cstring>
-#include "node.h"
+//#include "node.h"
 #include "studentlist.h"
 using namespace std; 
 /*
@@ -52,24 +52,17 @@ float Student::getGPA()
 
 void Student::setFirstName(const char* fName) 
 {
-    if(firstName)
-    {
-        delete[] firstName;
-        firstName = new char[strlen(fName)+1];
-        strcpy(firstName, fName);
+    delete[] firstName;
 
-    }
+    firstName = new char[strlen(fName)+1];
+    strcpy(firstName, fName);
 }
 
 void Student::setLastName(const char* lName) 
 {
-    if(lastName)
-    {
         delete[] lastName;
         lastName = new char[strlen(lName)+1];
         strcpy(lastName, lName);
-
-    }
 }
 
 void Student::setStudentId(int id) 
