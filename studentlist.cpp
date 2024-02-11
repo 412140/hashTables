@@ -85,6 +85,7 @@ int StudentList::hashFxn(const char* key)
 
 void StudentList::printStu()
 {
+  bool isEmpty;
   for(int x =0; x<SIZE;++x)
   {
     Node* curr = hashTable[x];
@@ -100,11 +101,12 @@ void StudentList::printStu()
       cout << lN << endl;
       cout << ", GPA: " <<gpa << endl; 
       curr=curr->next;
+      isEmpty=false;
     }
 
 
   }
-
+ if(isEmpty){cout << "list empty" << endl;}
 
 }
  void StudentList::delStu(int id)
