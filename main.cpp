@@ -36,12 +36,19 @@ int main()
       //studentList.quit();
       break; //got it :) 
     } else if(strcmp(cmd, "add")==0) {
+      cout << "How many?: ";
+      int num;
+      cin >> num;
+
+      for(int z = 0; z < num; z++)
+      {
       char* firstName = studentList.genName("first_names.txt");
       char* lastName = studentList.genName("last_names.txt");
       int id = studentList.genId();
       float gpa = studentList.genGpa();
       studentList.addStu(firstName, lastName, id, gpa);
-      
+      }
+     
     } else if(strcmp(cmd, "print")==0) {
       studentList.printStu();
     
